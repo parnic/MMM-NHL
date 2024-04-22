@@ -4,6 +4,8 @@
 
 ### Fixed
 
+* Updated module to display playoff series, if configured to, with the new NHL API.
+
 ### Added
 
 ### Changed

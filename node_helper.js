@@ -177,6 +177,9 @@ module.exports = NodeHelper.create({
      * @function getRemainingGameTime
      * @description Helper function to retrieve remaining game time.
      * @async
+     * 
+     * @param {string} game - Game info
+     * @param {string} scores - Scores
      *
      * @returns {string?} Remaining game time.
      */
@@ -197,6 +200,8 @@ module.exports = NodeHelper.create({
      * @function hydrateRemainingTime
      * @description Hydrates remaining time on the games in the schedule from the scores API endpoint.
      * @async
+     * 
+     * @param {string} schedule - Schedule data
      *
      * @returns {object[]} Raw games from API endpoint including remaining time.
      */
@@ -528,7 +533,7 @@ module.exports = NodeHelper.create({
         if (season.mode === 3 || games.length === 0) {
 
             const playoffData = await this.fetchPlayoffs();
-            const playoffSeries = this.computePlayoffDetails(playoffData).filter(s => s.roundNumber != playoffData.currentRound);
+            const playoffSeries = this.computePlayoffDetails(playoffData).filter(s => s.roundNumber !== playoffData.currentRound);
 
             this.sendSocketNotification('PLAYOFFS', playoffSeries);
         }
