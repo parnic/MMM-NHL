@@ -80,27 +80,27 @@
                     <tr>
                         {% if config.showNames %}
                             <td class="align-right">
-                                {{ series.teams.home.short }}
+                                {{ series.teams.topSeed.short }}
                             </td>
                         {% endif %}
                         {% if config.showLogos %}
                             <td>
                                 <img class="icon {{ "no-color" if not config.colored }}"
-                                    src="https://assets.nhle.com/logos/nhl/svg/{{ series.teams.home.short }}_dark.svg"/>
+                                    src="https://assets.nhle.com/logos/nhl/svg/{{ series.teams.topSeed.short }}_dark.svg"/>
                             </td>
                         {% endif %}
-                        <td>{{ series.teams.home.score }}</td>
+                        <td>{{ series.teams.topSeed.score }}</td>
                         <td>:</td>
-                        <td>{{ series.teams.away.score }}</td>
+                        <td>{{ series.teams.bottomSeed.score }}</td>
                         {% if config.showLogos %}
                             <td>
                                 <img class="icon {{ "no-color" if not config.colored }}"
-                                    src="https://assets.nhle.com/logos/nhl/svg/{{ series.teams.away.short }}_dark.svg"/>
+                                    src="https://assets.nhle.com/logos/nhl/svg/{{ series.teams.bottomSeed.short }}_dark.svg"/>
                             </td>
                         {% endif %}
                         {% if config.showNames %}
                             <td class="align-left">
-                                {{ series.teams.away.short }}
+                                {{ series.teams.bottomSeed.short }}
                             </td>
                         {% endif %}
                     </tr>

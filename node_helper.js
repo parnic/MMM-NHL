@@ -27,7 +27,7 @@ const Log = require('logger');
  */
 const NodeHelper = require('node_helper');
 
-const BASE_PLAYOFF_URL = 'https://statsapi.web.nhl.com/api/v1/tournaments/playoffs?expand=round.series';
+const BASE_PLAYOFF_URL = 'https://api-web.nhle.com/v1/playoff-series/carousel';
 
 /**
  * Derived team details of a game from API endpoint for easier usage.
@@ -253,16 +253,18 @@ module.exports = NodeHelper.create({
      * @returns {object} Raw playoff data from API endpoint.
      */
     async fetchPlayoffs() {
-        // TODO: Find playoff endpoints in new API
-        const response = await fetch(BASE_PLAYOFF_URL);
+        const year = new Date().getFullYear();
+        const lastYear = year - 1;
+        const url = `${BASE_PLAYOFF_URL}/${lastYear}${year}`;
+        const response = await fetch(url);
 
         if (!response.ok) {
-            Log.error(`Fetching NHL playoffs failed: ${response.status} ${response.statusText}.`);
+            Log.error(`Fetching NHL playoffs from ${url} failed: ${response.status} ${response.statusText}.`);
             return;
         }
 
         const playoffs = await response.json();
-        playoffs.rounds.sort((a, b) => a.number <= b.number ? 1 : -1);
+        playoffs.rounds.sort((a, b) => a.roundNumber <= b.roundNumber ? 1 : -1);
 
         return playoffs;
     },
@@ -398,18 +400,11 @@ module.exports = NodeHelper.create({
      *
      * @param {object} rawTeam - Raw team information.
      *
-     * @param {object} game - Raw game information.
-     *
      * @returns {Game} Parsed game information.
      */
-    parsePlayoffTeam(rawTeam, game) {
+    parsePlayoffTeam(rawTeam) {
         const team = this.parseTeam(rawTeam);
-
-        if (game?.seriesStatus?.topSeedTeamId === team.id) {
-            team.score = game?.seriesStatus?.topSeedWins;
-        } else {
-            team.score = game?.seriesStatus?.bottomSeedWins;
-        }
+        team.score = rawTeam.wins;
 
         return team;
     },
@@ -465,16 +460,16 @@ module.exports = NodeHelper.create({
      * @returns {Series} Parsed series information.
      */
     parseSeries(series = {}) {
-        if (!series.matchupTeams || series.matchupTeams.length === 0) {
+        if (!series.bottomSeed || !series.topSeed) {
             return null;
         }
 
         return {
-            number: series.number,
-            round: series.round.number,
+            letter: series.seriesLetter,
+            round: series.roundNumber,
             teams: {
-                home: this.parsePlayoffTeam(series.matchupTeams, undefined), // TODO: Don't pass undefined to retrieve the correct score
-                away: this.parsePlayoffTeam(series.matchupTeams, undefined), // TODO: Don't pass undefined to retrieve the correct score
+                bottomSeed: this.parsePlayoffTeam(series.bottomSeed),
+                topSeed: this.parsePlayoffTeam(series.topSeed),
             }
         }
     },
@@ -533,7 +528,7 @@ module.exports = NodeHelper.create({
         if (season.mode === 3 || games.length === 0) {
 
             const playoffData = await this.fetchPlayoffs();
-            const playoffSeries = this.computePlayoffDetails(playoffData).filter(s => s.round >= playoffData.defaultRound);
+            const playoffSeries = this.computePlayoffDetails(playoffData).filter(s => s.roundNumber != playoffData.currentRound);
 
             this.sendSocketNotification('PLAYOFFS', playoffSeries);
         }
