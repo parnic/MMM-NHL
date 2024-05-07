@@ -533,7 +533,7 @@ module.exports = NodeHelper.create({
         if (season.mode === 3 || games.length === 0) {
 
             const playoffData = await this.fetchPlayoffs();
-            const playoffSeries = this.computePlayoffDetails(playoffData).filter(s => s.roundNumber !== playoffData.currentRound);
+            const playoffSeries = this.computePlayoffDetails(playoffData).filter(s => s.round >= playoffData.currentRound);
 
             this.sendSocketNotification('PLAYOFFS', playoffSeries);
         }
