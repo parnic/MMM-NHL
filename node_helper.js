@@ -533,7 +533,13 @@ module.exports = NodeHelper.create({
         if (season.mode === 3 || games.length === 0) {
 
             const playoffData = await this.fetchPlayoffs();
-            const playoffSeries = this.computePlayoffDetails(playoffData).filter(s => s.round >= playoffData.currentRound);
+            let currentRound = playoffData ? playoffData.currentRound : 0;
+            if (playoffData && playoffData.rounds) {
+                const activeRounds = playoffData.rounds.filter(round => round.series.some(series => series.bottomSeed.wins < series.neededToWin && series.topSeed.wins < series.neededToWin));
+                const activeRoundNumbers = activeRounds.map(round => round.roundNumber);
+                currentRound = Math.min(...activeRoundNumbers);
+            }
+            const playoffSeries = this.computePlayoffDetails(playoffData).filter(s => s.round >= currentRound);
 
             this.sendSocketNotification('PLAYOFFS', playoffSeries);
         }
