@@ -10,6 +10,8 @@
 
 ### Changed
 
+* Removed dependency on node-fetch so that `npm install` is no longer required for setup.
+
 ### Removed
 
 ## [2.4.0]
