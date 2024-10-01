@@ -4,7 +4,7 @@ National Hockey League Module for MagicMirror²
 
 ## Examples
 
-![](.github/example_nhl.png) ![](.github/example_nhl_2.png) ![](.github/example_nhl_3.png) ![](.github/example_nhl_4.png) ![](.github/example_nhl_5.png)
+![past games](.github/example_nhl.png) ![in progress](.github/example_nhl_2.png) ![team focus](.github/example_nhl_3.png) ![no color](.github/example_nhl_4.png) ![playoffs](.github/example_nhl_5.png)
 
 ## Dependencies
 
@@ -37,7 +37,7 @@ National Hockey League Module for MagicMirror²
 | `reloadInterval` | `1800000` (30 mins) | How often should the data be fetched. |
 | `daysInPast` | `1` | How many days should a game be displayed after it is finished. |
 | `daysAhead` | `7` | How many days should a game be displayed before it starts. |
-| `liveReloadInterval` | `60000 (1 min)` | How often should the data be fetched during a live game. |
+| `liveReloadInterval` | `60000` (1 min) | How often should the data be fetched during a live game. |
 | `showNames` | `true` | Should team names be displayed? |
 | `showLogos` | `true` | Should team logos be displayed? |
 | `showPlayoffSeries` | `true` | Should playoff series be displayed (if in playoffs)? |
@@ -49,9 +49,9 @@ National Hockey League Module for MagicMirror²
 | --- | --- | --- |
 | `locale` | `undefined` | By default it is using your system settings. You can specify the locale in the global MagicMirror² config. Possible values are for e.g.: `'en-US'` or `'de-DE'`. |
 
-To set a global config you have top set the value in your config.js file inside the MagicMirror² project.
+To set a global config you have to set the value in your config.js file inside the MagicMirror² project.
 
-![](.github/global.png)
+![config](.github/global.png)
 
 ## Developer
 
