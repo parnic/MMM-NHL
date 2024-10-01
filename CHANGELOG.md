@@ -1,5 +1,17 @@
 # MMM-NHL Changelog
 
+## [Unreleased]
+
+### Fixed
+
+* Updated module to display playoff series, if configured to, with the new NHL API.
+
+### Added
+
+### Changed
+
+### Removed
+
 ## [2.4.0]
 
 Thanks to @parnic @dannoh for their contributions.
