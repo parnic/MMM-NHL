@@ -10,12 +10,6 @@
 /* eslint-env node */
 
 /**
- * @external node-fetch
- * @see https://www.npmjs.com/package/node-fetch
- */
-const fetch = require('node-fetch');
-
-/**
  * @external logger
  * @see https://github.com/MichMich/MagicMirror/blob/master/js/logger.js
  */
@@ -78,7 +72,6 @@ const BASE_PLAYOFF_URL = 'https://api-web.nhle.com/v1/playoff-series/carousel';
  * @module node_helper
  * @description Backend for the module to query data from the API provider.
  *
- * @requires external:node-fetch
  * @requires external:logger
  * @requires external:node_helper
  */

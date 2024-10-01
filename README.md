@@ -10,7 +10,6 @@ National Hockey League Module for MagicMirror²
 
 * An installation of [MagicMirror²](https://github.com/MichMich/MagicMirror)
 * npm
-* [node-fetch](https://www.npmjs.com/package/node-fetch)
 
 ## Installation
 
@@ -26,8 +25,6 @@ National Hockey League Module for MagicMirror²
     }
 }
 ```
-
-* Run command `npm i --production` in `~/MagicMirror/modules/MMM-NHL` directory.
 
 ## Config Options
 

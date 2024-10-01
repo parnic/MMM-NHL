@@ -27,8 +27,5 @@
     "jsdoc": "^3.6.10",
     "stylelint": "^14.8.2",
     "stylelint-config-standard": "^25.0.0"
-  },
-  "dependencies": {
-    "node-fetch": "^2.6.7"
   }
 }
