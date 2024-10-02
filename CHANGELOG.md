@@ -1,18 +1,16 @@
 # MMM-NHL Changelog
 
-## [Unreleased]
+## [2.5.0]
+
+MagicMirror² version >= 2.28.0 required.
 
 ### Fixed
 
 * Updated module to display playoff series, if configured to, with the new NHL API.
 
-### Added
-
 ### Changed
 
 * Removed dependency on node-fetch so that `npm install` is no longer required for setup.
-
-### Removed
 
 ## [2.4.0]
 
