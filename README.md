@@ -8,7 +8,7 @@ National Hockey League Module for MagicMirror²
 
 ## Dependencies
 
-* An installation of [MagicMirror²](https://github.com/MichMich/MagicMirror)
+* An installation of [MagicMirror²](https://github.com/MagicMirrorOrg/MagicMirror).
 * npm
 
 ## Installation
