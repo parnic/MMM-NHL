@@ -49,7 +49,7 @@ Module.register('MMM-NHL', {
         FINAL: 'FINAL',
         'FINAL OT': 'FINAL_OVERTIME',
         'FINAL SO': 'FINAL_SHOOTOUT',
-        PPD: 'PPD'
+        PPD: 'PPD',
     },
 
     /**
@@ -106,7 +106,7 @@ Module.register('MMM-NHL', {
         showNames: true,
         showLogos: true,
         showPlayoffSeries: true,
-        rollOver: false
+        rollOver: false,
     },
 
     /**
@@ -121,7 +121,7 @@ Module.register('MMM-NHL', {
             en: 'translations/en.json',
             de: 'translations/de.json',
             fr: 'translations/fr.json',
-            fi: 'translations/fi.json'
+            fi: 'translations/fi.json',
         };
     },
 
@@ -163,7 +163,7 @@ Module.register('MMM-NHL', {
             playoffSeries: this.playoffSeries,
             rotateIndex: this.rotateIndex,
             maxGames: Math.min(this.games.length, this.rotateIndex + this.config.matches),
-            config: this.config
+            config: this.config,
         };
     },
 
@@ -200,7 +200,8 @@ Module.register('MMM-NHL', {
             this.games = payload.games;
             this.season = payload.season;
             this.setRotateInterval();
-        } else if (notification === 'PLAYOFFS') {
+        }
+        else if (notification === 'PLAYOFFS') {
             this.playoffSeries = payload;
             this.updateDom(300);
         }
@@ -217,12 +218,14 @@ Module.register('MMM-NHL', {
             this.rotateInterval = setInterval(() => {
                 if (this.rotateIndex + this.config.matches >= this.games.length) {
                     this.rotateIndex = 0;
-                } else {
+                }
+                else {
                     this.rotateIndex += this.config.matches;
                 }
                 this.updateDom(300);
             }, this.config.rotateInterval);
-        } else if (this.games.length <= this.config.matches) {
+        }
+        else if (this.games.length <= this.config.matches) {
             clearInterval(this.rotateInterval);
             this.rotateIndex = 0;
         }
@@ -237,20 +240,20 @@ Module.register('MMM-NHL', {
      * @returns {void}
      */
     addFilters() {
-        this.nunjucksEnvironment().addFilter('formatStartDate', game => {
+        this.nunjucksEnvironment().addFilter('formatStartDate', (game) => {
             const now = new Date();
             const inAWeek = now.setDate(now.getDate() + 7);
             const start = new Date(game.timestamp);
 
             if (start > inAWeek) {
                 return new Intl.DateTimeFormat(config.locale, {
-                    month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+                    month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
                 }).format(start);
             }
 
             return new Intl.DateTimeFormat(config.locale, {
-                weekday: 'short', hour: '2-digit', minute: '2-digit'
+                weekday: 'short', hour: '2-digit', minute: '2-digit',
             }).format(start);
         });
-    }
+    },
 });

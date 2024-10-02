@@ -1,6 +1,6 @@
 # MMM-NHL [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/fewieden/MMM-NHL/master/LICENSE) ![Build status](https://github.com/fewieden/MMM-NHL/workflows/build/badge.svg) [![Code Climate](https://codeclimate.com/github/fewieden/MMM-NHL/badges/gpa.svg?style=flat)](https://codeclimate.com/github/fewieden/MMM-NHL) [![Known Vulnerabilities](https://snyk.io/test/github/fewieden/mmm-nhl/badge.svg)](https://snyk.io/test/github/fewieden/mmm-nhl)
 
-National Hockey League Module for MagicMirror²
+National Hockey League module for [MagicMirror²](https://github.com/MagicMirrorOrg/MagicMirror).
 
 ## Examples
 
@@ -8,8 +8,7 @@ National Hockey League Module for MagicMirror²
 
 ## Dependencies
 
-* An installation of [MagicMirror²](https://github.com/MagicMirrorOrg/MagicMirror).
-* npm
+* An installation of MagicMirror².
 
 ## Installation
 
@@ -17,13 +16,13 @@ National Hockey League Module for MagicMirror²
 * Configure your `~/MagicMirror/config/config.js`:
 
 ```js
-{
-    module: 'MMM-NHL',
-    position: 'top_right',
-    config: {
-        // Add your config options here, which have a different value than default.
-    }
-}
+    {
+        module: 'MMM-NHL',
+        position: 'top_right',
+        config: {
+            // Add your config options here, which have a different value than default.
+        }
+    },
 ```
 
 ## Config Options
@@ -55,5 +54,7 @@ To set a global config you have to set the value in your config.js file inside t
 
 ## Developer
 
-* `npm run lint` - Lints JS and CSS files.
+* `npm i` - Install devDependecies.
+* `npm run lint` - Lint check JS and CSS files.
+* `npm run lint:fix` - Lint fix JS and CSS files.
 * `npm run docs` - Generates documentation.

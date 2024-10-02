@@ -162,7 +162,7 @@ module.exports = NodeHelper.create({
             endUtc: end.toISOString(),
             endFormatted: new Intl.DateTimeFormat('fr-ca', { timeZone: 'America/Toronto' }).format(end),
             todayUtc: today.toISOString(),
-            todayFormatted: new Intl.DateTimeFormat('fr-ca', { timeZone: 'America/Toronto' }).format(today)
+            todayFormatted: new Intl.DateTimeFormat('fr-ca', { timeZone: 'America/Toronto' }).format(today),
         };
     },
 
@@ -330,7 +330,7 @@ module.exports = NodeHelper.create({
         if (game) {
             return {
                 year: `${game.season.toString().slice(2, 4)}/${game.season.toString().slice(6, 8)}`,
-                mode: game.gameType
+                mode: game.gameType,
             };
         }
 
@@ -340,7 +340,7 @@ module.exports = NodeHelper.create({
 
         return {
             year: `${currentYear}/${nextYear}`,
-            mode: 1
+            mode: 1,
         };
     },
 
@@ -358,8 +358,8 @@ module.exports = NodeHelper.create({
         }
 
         const series = [];
-        playoffData.rounds.forEach(r => {
-            r.series.forEach(s => {
+        playoffData.rounds.forEach((r) => {
+            r.series.forEach((s) => {
                 const parsed = this.parseSeries(s);
                 if (parsed) {
                     series.push(parsed);
@@ -388,7 +388,7 @@ module.exports = NodeHelper.create({
             id: team.id,
             name: this.teamMapping[team.id].name,
             short: this.teamMapping[team.id].short,
-            score: team.score ?? 0
+            score: team.score ?? 0,
         };
     },
 
@@ -423,13 +423,13 @@ module.exports = NodeHelper.create({
             status: game.gameState,
             teams: {
                 away: this.parseTeam(game.awayTeam),
-                home: this.parseTeam(game.homeTeam)
+                home: this.parseTeam(game.homeTeam),
             },
             live: {
                 period: this.getNumberWithOrdinal(game.periodDescriptor.number),
                 periodType: game.periodDescriptor.periodType,
                 timeRemaining: game.timeRemaining,
-            }
+            },
         };
     },
 
@@ -468,8 +468,8 @@ module.exports = NodeHelper.create({
             teams: {
                 bottomSeed: this.parsePlayoffTeam(series.bottomSeed),
                 topSeed: this.parsePlayoffTeam(series.topSeed),
-            }
-        }
+            },
+        };
     },
 
     /**
@@ -524,7 +524,6 @@ module.exports = NodeHelper.create({
         this.sendSocketNotification('SCHEDULE', { games: rollOverGames, season });
 
         if (season.mode === 3 || games.length === 0) {
-
             const playoffData = await this.fetchPlayoffs();
             let currentRound = playoffData ? playoffData.currentRound : 0;
             if (playoffData && playoffData.rounds) {
@@ -552,5 +551,5 @@ module.exports = NodeHelper.create({
         if (hasLiveGames || gameAboutToStart) {
             return this.updateSchedule();
         }
-    }
+    },
 });
