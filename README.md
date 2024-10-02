@@ -12,7 +12,24 @@ National Hockey League module for [MagicMirror²](https://github.com/MagicMirror
 
 ## Installation
 
-* Clone this repo into `~/MagicMirror/modules` directory.
+Just clone the module into your modules directory:
+
+```bash
+cd ~/MagicMirror/modules
+git clone https://github.com/parnic/MMM-NHL
+```
+
+## Update
+
+Just enter the MMM-PublicTransportHafas directory, pull the update:
+
+```bash
+cd ~/MagicMirror/modules/MMM-NHL
+git pull
+```
+
+## Configuration
+
 * Configure your `~/MagicMirror/config/config.js`:
 
 ```js
