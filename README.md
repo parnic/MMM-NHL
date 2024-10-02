@@ -21,7 +21,7 @@ git clone https://github.com/parnic/MMM-NHL
 
 ## Update
 
-Just enter the MMM-PublicTransportHafas directory, pull the update:
+Just enter the module's directory and pull the update:
 
 ```bash
 cd ~/MagicMirror/modules/MMM-NHL
