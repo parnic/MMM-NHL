@@ -33,9 +33,9 @@ const config = [
             "max-lines": ["warn", 600],
             "max-statements": ["error", 25],
             "no-magic-numbers": "off",
-            "no-shadow": "warn",
+            "no-shadow": "off",
             "no-ternary": "off",
-            "no-warning-comments": "warn",
+            "no-warning-comments": "off",
             "one-var": "off",
             "sort-keys": "off",
             "strict": "off"
