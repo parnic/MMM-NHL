@@ -1,16 +1,10 @@
 # MMM-NHL Changelog
 
-## [Unreleased]
+## [2.5.1]
 
 ### Fixed
 
 - Fixed display of postponed games with the new NHL API.
-
-### Added
-
-### Changed
-
-### Removed
 
 ## [2.5.0]
 
