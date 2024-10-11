@@ -4,14 +4,11 @@
 
 ### Fixed
 
+- Fixed display of postponed games with the new NHL API.
+
 ### Added
 
 ### Changed
-
-- Update workflows.
-- Update devDependencies.
-- Update lint process.
-- Lint files.
 
 ### Removed
 
