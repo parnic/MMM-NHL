@@ -40,6 +40,7 @@ const BASE_PLAYOFF_URL = 'https://api-web.nhle.com/v1/playoff-series/carousel';
  * @property {string} timestamp - Start date of the game in UTC timezone.
  * @property {string} gameDay - Game day in format YYYY-MM-DD in north american timezone.
  * @property {string} gameState - Contains information about the game status, e.g. OFF, LIVE, CRIT, FUT.
+ * @property {string} gameScheduleState - Contains specialized information about the scheduling of this game, e.g. OK, PPD (postponed)
  * @property {Team} awayTeam - Contains information about the away team.
  * @property {Team} homeTeam - Contains information about the home team.
  * @property {object} periodDescriptor - Contains information about the period of play of the game. Is present on all games, past, present, and future.
@@ -421,6 +422,7 @@ module.exports = NodeHelper.create({
             timestamp: game.startTimeUTC,
             gameDay: game.gameDay,
             status: game.gameState,
+            scheduleStatus: game.gameScheduleState,
             teams: {
                 away: this.parseTeam(game.awayTeam),
                 home: this.parseTeam(game.homeTeam),
