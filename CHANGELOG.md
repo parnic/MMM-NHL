@@ -1,19 +1,10 @@
 # MMM-NHL Changelog
 
-## [Unreleased]
+## [2.5.1]
 
 ### Fixed
 
-### Added
-
-### Changed
-
-- Update workflows.
-- Update devDependencies.
-- Update lint process.
-- Lint files.
-
-### Removed
+- Fixed display of postponed games with the new NHL API.
 
 ## [2.5.0]
 
