@@ -49,8 +49,10 @@
                     {% endif %}
                     {% if config.showLogos %}
                         <td>
-                            <img class="icon {{ "no-color" if not config.colored }}"
-                                 src="https://assets.nhle.com/logos/nhl/svg/{{games[index].teams.home.short}}_dark.svg"/>
+                            {% if games[index].teams.home.id >= 0 %}
+                                <img class="icon {{ "no-color" if not config.colored }}"
+                                    src="https://assets.nhle.com/logos/nhl/svg/{{games[index].teams.home.short}}_dark.svg"/>
+                            {% endif %}
                         </td>
                     {% endif %}
                     <td>{{ games[index].teams.home.score }}</td>
@@ -58,8 +60,10 @@
                     <td>{{ games[index].teams.away.score }}</td>
                     {% if config.showLogos %}
                         <td>
-                            <img class="icon {{ "no-color" if not config.colored }}"
-                                 src="https://assets.nhle.com/logos/nhl/svg/{{games[index].teams.away.short}}_dark.svg"/>
+                            {% if games[index].teams.away.id >= 0 %}
+                                <img class="icon {{ "no-color" if not config.colored }}"
+                                    src="https://assets.nhle.com/logos/nhl/svg/{{games[index].teams.away.short}}_dark.svg"/>
+                            {% endif %}
                         </td>
                     {% endif %}
                     {% if config.showNames %}
@@ -84,8 +88,10 @@
                         {% endif %}
                         {% if config.showLogos %}
                             <td>
-                                <img class="icon {{ "no-color" if not config.colored }}"
-                                    src="https://assets.nhle.com/logos/nhl/svg/{{ series.teams.topSeed.short }}_dark.svg"/>
+                                {% if series.teams.topSeed.id >= 0 %}
+                                    <img class="icon {{ "no-color" if not config.colored }}"
+                                        src="https://assets.nhle.com/logos/nhl/svg/{{ series.teams.topSeed.short }}_dark.svg"/>
+                                {% endif %}
                             </td>
                         {% endif %}
                         <td>{{ series.teams.topSeed.score }}</td>
@@ -93,8 +99,10 @@
                         <td>{{ series.teams.bottomSeed.score }}</td>
                         {% if config.showLogos %}
                             <td>
-                                <img class="icon {{ "no-color" if not config.colored }}"
-                                    src="https://assets.nhle.com/logos/nhl/svg/{{ series.teams.bottomSeed.short }}_dark.svg"/>
+                                {% if series.teams.bottomSeed.id >= 0 %}
+                                    <img class="icon {{ "no-color" if not config.colored }}"
+                                        src="https://assets.nhle.com/logos/nhl/svg/{{ series.teams.bottomSeed.short }}_dark.svg"/>
+                                {% endif %}
                             </td>
                         {% endif %}
                         {% if config.showNames %}
