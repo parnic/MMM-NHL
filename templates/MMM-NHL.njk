@@ -27,7 +27,13 @@
                             {{ games[index] | formatStartDate }}
                         {% elif (games[index].status === "LIVE" or games[index].status === "CRIT") and games[index].live.period %}
                             {% if games[index].live.timeRemaining %}
-                                <div class="live">{{ games[index].live.period | translate }}</div>
+                                <div class="live">
+                                    {% if games[index].live.period === '1st' or games[index].live.period === '2nd' or games[index].live.period === '3rd' %}
+                                        {{ games[index].live.period | translate }}
+                                    {% else %}
+                                        {{ "OVER_TIME" | translate({OT_NUM: "" if games[index].live.period === '4' else (games[index].live.period - 3)}) }}
+                                    {% endif %}
+                                </div>
                                 <div class="live">
                                     {{ "TIME_LEFT" | translate({TIME: games[index].live.timeRemaining}) }}
                                 </div>

@@ -417,7 +417,7 @@ module.exports = NodeHelper.create({
                 home: this.parseTeam(game.homeTeam),
             },
             live: {
-                period: this.getNumberWithOrdinal(game.periodDescriptor.number),
+                period: game.periodDescriptor.number > 3 ? `${game.periodDescriptor.number}` : this.getNumberWithOrdinal(game.periodDescriptor.number),
                 periodType: game.periodDescriptor.periodType,
                 timeRemaining: game.timeRemaining,
             },
@@ -433,7 +433,6 @@ module.exports = NodeHelper.create({
      * @returns {string} The given number with its ordinal suffix appended.
      */
     getNumberWithOrdinal(n) {
-        // TODO: This function seems over complicated, don't we just have 1st 2nd and 3rd?
         const s = ['th', 'st', 'nd', 'rd'];
         const v = n % 100;
 

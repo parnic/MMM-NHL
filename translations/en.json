@@ -5,7 +5,7 @@
   "1st": "1st Period",
   "2nd": "2nd Period",
   "3rd": "3rd Period",
-  "OVER_TIME": "OT",
+  "OVER_TIME": "{OT_NUM}OT",
   "SHOOTOUT": "SO",
   "FINAL": "Final",
   "FINAL_OT": "Final (OT)",

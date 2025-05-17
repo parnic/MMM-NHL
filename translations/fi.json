@@ -5,7 +5,7 @@
   "1st": "1. Erä",
   "2nd": "2. Erä",
   "3rd": "3. Erä",
-  "OVER_TIME": "JA",
+  "OVER_TIME": "{OT_NUM}JA",
   "SHOOTOUT": "VL",
   "FINAL": "Päättynyt",
   "FINAL_OT": "Päättynyt (JA)",
