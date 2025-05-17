@@ -104,8 +104,12 @@ module.exports = NodeHelper.create({
             await this.initTeams();
 
             await this.updateSchedule();
-            setInterval(() => this.updateSchedule(), this.config.reloadInterval);
-            setInterval(() => this.fetchOnLiveState(), this.config.liveReloadInterval);
+
+            clearInterval(this.scheduleInterval);
+            this.scheduleInterval = setInterval(() => this.updateSchedule(), this.config.reloadInterval);
+
+            clearInterval(this.liveInterval);
+            this.liveInterval = setInterval(() => this.fetchOnLiveState(), this.config.liveReloadInterval);
         }
     },
 
