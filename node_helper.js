@@ -393,23 +393,8 @@ module.exports = NodeHelper.create({
             id: team.id,
             name: team.id === -1 ? team.abbrev : this.teamMapping[team.id].name,
             short: team.id === -1 ? team.abbrev : this.teamMapping[team.id].short,
-            score: team.score ?? 0,
+            score: team.score ?? team.wins ?? 0,
         };
-    },
-
-    /**
-     * @function parsePlayoffTeam
-     * @description Transforms raw game information for easier usage.
-     *
-     * @param {object} rawTeam - Raw team information.
-     *
-     * @returns {Game} Parsed game information.
-     */
-    parsePlayoffTeam(rawTeam) {
-        const team = this.parseTeam(rawTeam);
-        team.score = rawTeam.wins;
-
-        return team;
     },
 
     /**
@@ -472,8 +457,8 @@ module.exports = NodeHelper.create({
             letter: series.seriesLetter,
             round: series.roundNumber,
             teams: {
-                bottomSeed: this.parsePlayoffTeam(series.bottomSeed),
-                topSeed: this.parsePlayoffTeam(series.topSeed),
+                bottomSeed: this.parseTeam(series.bottomSeed),
+                topSeed: this.parseTeam(series.topSeed),
             },
         };
     },
