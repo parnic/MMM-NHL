@@ -55,9 +55,17 @@
                             {% endif %}
                         </td>
                     {% endif %}
-                    <td>{{ games[index].teams.home.score }}</td>
+                    <td>
+                        {% if games[index].teams.home.id >= 0 and games[index].teams.away.id >= 0 %}
+                            {{ games[index].teams.home.score }}
+                        {% endif %}
+                    </td>
                     <td>:</td>
-                    <td>{{ games[index].teams.away.score }}</td>
+                    <td>
+                        {% if games[index].teams.away.id >= 0 and games[index].teams.home.id >= 0 %}
+                            {{ games[index].teams.away.score }}
+                        {% endif %}
+                    </td>
                     {% if config.showLogos %}
                         <td>
                             {% if games[index].teams.away.id >= 0 %}
@@ -94,9 +102,17 @@
                                 {% endif %}
                             </td>
                         {% endif %}
-                        <td>{{ series.teams.topSeed.score }}</td>
+                        <td>
+                            {% if series.teams.topSeed.id >= 0 and series.teams.bottomSeed.id >= 0 %}
+                                {{ series.teams.topSeed.score }}
+                            {% endif %}
+                        </td>
                         <td>:</td>
-                        <td>{{ series.teams.bottomSeed.score }}</td>
+                        <td>
+                            {% if series.teams.bottomSeed.id >= 0 and series.teams.topSeed.id >= 0 %}
+                                {{ series.teams.bottomSeed.score }}
+                            {% endif %}
+                        </td>
                         {% if config.showLogos %}
                             <td>
                                 {% if series.teams.bottomSeed.id >= 0 %}
