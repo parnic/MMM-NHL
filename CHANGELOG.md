@@ -1,5 +1,13 @@
 # MMM-NHL Changelog
 
+## [2.5.2]
+
+### Fixed
+
+- Support multiple clients using the same server.
+- Fix parsing of playoff series with only one known team (the opponent is still playing the previous round's series).
+- Fix overtime periods showing as 4, 5, etc. They will now display as OT, 2OT, 3OT, and so on.
+
 ## [2.5.1]
 
 ### Fixed
