@@ -449,7 +449,7 @@ module.exports = NodeHelper.create({
      * @returns {Series} Parsed series information.
      */
     parseSeries(series = {}) {
-        if (!series.bottomSeed || !series.topSeed || series.bottomSeed.id === -1 || series.topSeed.id === -1) {
+        if (!series.bottomSeed || !series.topSeed) {
             return null;
         }
 
