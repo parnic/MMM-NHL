@@ -391,8 +391,8 @@ module.exports = NodeHelper.create({
 
         return {
             id: team.id,
-            name: this.teamMapping[team.id].name,
-            short: this.teamMapping[team.id].short,
+            name: team.id === -1 ? team.abbrev : this.teamMapping[team.id].name,
+            short: team.id === -1 ? team.abbrev : this.teamMapping[team.id].short,
             score: team.score ?? 0,
         };
     },
