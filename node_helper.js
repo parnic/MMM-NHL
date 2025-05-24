@@ -10,24 +10,18 @@
 /* eslint-env node */
 
 /**
- * @external node-fetch
- * @see https://www.npmjs.com/package/node-fetch
- */
-const fetch = require('node-fetch');
-
-/**
  * @external logger
- * @see https://github.com/MichMich/MagicMirror/blob/master/js/logger.js
+ * @see https://github.com/MagicMirrorOrg/MagicMirror/blob/master/js/logger.js
  */
 const Log = require('logger');
 
 /**
  * @external node_helper
- * @see https://github.com/MichMich/MagicMirror/blob/master/js/node_helper.js
+ * @see https://github.com/MagicMirrorOrg/MagicMirror/blob/master/js/node_helper.js
  */
 const NodeHelper = require('node_helper');
 
-const BASE_PLAYOFF_URL = 'https://statsapi.web.nhl.com/api/v1/tournaments/playoffs?expand=round.series';
+const BASE_PLAYOFF_URL = 'https://api-web.nhle.com/v1/playoff-series/carousel';
 
 /**
  * Derived team details of a game from API endpoint for easier usage.
@@ -46,6 +40,7 @@ const BASE_PLAYOFF_URL = 'https://statsapi.web.nhl.com/api/v1/tournaments/playof
  * @property {string} timestamp - Start date of the game in UTC timezone.
  * @property {string} gameDay - Game day in format YYYY-MM-DD in north american timezone.
  * @property {string} gameState - Contains information about the game status, e.g. OFF, LIVE, CRIT, FUT.
+ * @property {string} gameScheduleState - Contains specialized information about the scheduling of this game, e.g. OK, PPD (postponed)
  * @property {Team} awayTeam - Contains information about the away team.
  * @property {Team} homeTeam - Contains information about the home team.
  * @property {object} periodDescriptor - Contains information about the period of play of the game. Is present on all games, past, present, and future.
@@ -78,7 +73,6 @@ const BASE_PLAYOFF_URL = 'https://statsapi.web.nhl.com/api/v1/tournaments/playof
  * @module node_helper
  * @description Backend for the module to query data from the API provider.
  *
- * @requires external:node-fetch
  * @requires external:logger
  * @requires external:node_helper
  */
@@ -110,8 +104,12 @@ module.exports = NodeHelper.create({
             await this.initTeams();
 
             await this.updateSchedule();
-            setInterval(() => this.updateSchedule(), this.config.reloadInterval);
-            setInterval(() => this.fetchOnLiveState(), this.config.liveReloadInterval);
+
+            clearInterval(this.scheduleInterval);
+            this.scheduleInterval = setInterval(() => this.updateSchedule(), this.config.reloadInterval);
+
+            clearInterval(this.liveInterval);
+            this.liveInterval = setInterval(() => this.fetchOnLiveState(), this.config.liveReloadInterval);
         }
     },
 
@@ -169,7 +167,7 @@ module.exports = NodeHelper.create({
             endUtc: end.toISOString(),
             endFormatted: new Intl.DateTimeFormat('fr-ca', { timeZone: 'America/Toronto' }).format(end),
             todayUtc: today.toISOString(),
-            todayFormatted: new Intl.DateTimeFormat('fr-ca', { timeZone: 'America/Toronto' }).format(today)
+            todayFormatted: new Intl.DateTimeFormat('fr-ca', { timeZone: 'America/Toronto' }).format(today),
         };
     },
 
@@ -177,6 +175,9 @@ module.exports = NodeHelper.create({
      * @function getRemainingGameTime
      * @description Helper function to retrieve remaining game time.
      * @async
+     *
+     * @param {string} game - Game info
+     * @param {string} scores - Scores
      *
      * @returns {string?} Remaining game time.
      */
@@ -197,6 +198,8 @@ module.exports = NodeHelper.create({
      * @function hydrateRemainingTime
      * @description Hydrates remaining time on the games in the schedule from the scores API endpoint.
      * @async
+     *
+     * @param {string} schedule - Schedule data
      *
      * @returns {object[]} Raw games from API endpoint including remaining time.
      */
@@ -253,16 +256,18 @@ module.exports = NodeHelper.create({
      * @returns {object} Raw playoff data from API endpoint.
      */
     async fetchPlayoffs() {
-        // TODO: Find playoff endpoints in new API
-        const response = await fetch(BASE_PLAYOFF_URL);
+        const year = new Date().getFullYear();
+        const lastYear = year - 1;
+        const url = `${BASE_PLAYOFF_URL}/${lastYear}${year}`;
+        const response = await fetch(url);
 
         if (!response.ok) {
-            Log.error(`Fetching NHL playoffs failed: ${response.status} ${response.statusText}.`);
+            Log.error(`Fetching NHL playoffs from ${url} failed: ${response.status} ${response.statusText}.`);
             return;
         }
 
         const playoffs = await response.json();
-        playoffs.rounds.sort((a, b) => a.number <= b.number ? 1 : -1);
+        playoffs.rounds.sort((a, b) => a.roundNumber <= b.roundNumber ? 1 : -1);
 
         return playoffs;
     },
@@ -330,7 +335,7 @@ module.exports = NodeHelper.create({
         if (game) {
             return {
                 year: `${game.season.toString().slice(2, 4)}/${game.season.toString().slice(6, 8)}`,
-                mode: game.gameType
+                mode: game.gameType,
             };
         }
 
@@ -340,7 +345,7 @@ module.exports = NodeHelper.create({
 
         return {
             year: `${currentYear}/${nextYear}`,
-            mode: 1
+            mode: 1,
         };
     },
 
@@ -358,8 +363,8 @@ module.exports = NodeHelper.create({
         }
 
         const series = [];
-        playoffData.rounds.forEach(r => {
-            r.series.forEach(s => {
+        playoffData.rounds.forEach((r) => {
+            r.series.forEach((s) => {
                 const parsed = this.parseSeries(s);
                 if (parsed) {
                     series.push(parsed);
@@ -386,32 +391,10 @@ module.exports = NodeHelper.create({
 
         return {
             id: team.id,
-            name: this.teamMapping[team.id].name,
-            short: this.teamMapping[team.id].short,
-            score: team.score ?? 0
+            name: team.id === -1 ? team.abbrev : this.teamMapping[team.id].name,
+            short: team.id === -1 ? team.abbrev : this.teamMapping[team.id].short,
+            score: team.score ?? team.wins ?? 0,
         };
-    },
-
-    /**
-     * @function parsePlayoffTeam
-     * @description Transforms raw game information for easier usage.
-     *
-     * @param {object} rawTeam - Raw team information.
-     *
-     * @param {object} game - Raw game information.
-     *
-     * @returns {Game} Parsed game information.
-     */
-    parsePlayoffTeam(rawTeam, game) {
-        const team = this.parseTeam(rawTeam);
-
-        if (game?.seriesStatus?.topSeedTeamId === team.id) {
-            team.score = game?.seriesStatus?.topSeedWins;
-        } else {
-            team.score = game?.seriesStatus?.bottomSeedWins;
-        }
-
-        return team;
     },
 
     /**
@@ -428,15 +411,16 @@ module.exports = NodeHelper.create({
             timestamp: game.startTimeUTC,
             gameDay: game.gameDay,
             status: game.gameState,
+            scheduleStatus: game.gameScheduleState,
             teams: {
                 away: this.parseTeam(game.awayTeam),
-                home: this.parseTeam(game.homeTeam)
+                home: this.parseTeam(game.homeTeam),
             },
             live: {
-                period: this.getNumberWithOrdinal(game.periodDescriptor.number),
+                period: game.periodDescriptor.number > 3 ? `${game.periodDescriptor.number}` : this.getNumberWithOrdinal(game.periodDescriptor.number),
                 periodType: game.periodDescriptor.periodType,
                 timeRemaining: game.timeRemaining,
-            }
+            },
         };
     },
 
@@ -449,7 +433,6 @@ module.exports = NodeHelper.create({
      * @returns {string} The given number with its ordinal suffix appended.
      */
     getNumberWithOrdinal(n) {
-        // TODO: This function seems over complicated, don't we just have 1st 2nd and 3rd?
         const s = ['th', 'st', 'nd', 'rd'];
         const v = n % 100;
 
@@ -465,18 +448,18 @@ module.exports = NodeHelper.create({
      * @returns {Series} Parsed series information.
      */
     parseSeries(series = {}) {
-        if (!series.matchupTeams || series.matchupTeams.length === 0) {
+        if (!series.bottomSeed || !series.topSeed) {
             return null;
         }
 
         return {
-            number: series.number,
-            round: series.round.number,
+            letter: series.seriesLetter,
+            round: series.roundNumber,
             teams: {
-                home: this.parsePlayoffTeam(series.matchupTeams, undefined), // TODO: Don't pass undefined to retrieve the correct score
-                away: this.parsePlayoffTeam(series.matchupTeams, undefined), // TODO: Don't pass undefined to retrieve the correct score
-            }
-        }
+                bottomSeed: this.parseTeam(series.bottomSeed),
+                topSeed: this.parseTeam(series.topSeed),
+            },
+        };
     },
 
     /**
@@ -531,9 +514,14 @@ module.exports = NodeHelper.create({
         this.sendSocketNotification('SCHEDULE', { games: rollOverGames, season });
 
         if (season.mode === 3 || games.length === 0) {
-
             const playoffData = await this.fetchPlayoffs();
-            const playoffSeries = this.computePlayoffDetails(playoffData).filter(s => s.round >= playoffData.defaultRound);
+            let currentRound = playoffData ? playoffData.currentRound : 0;
+            if (playoffData && playoffData.rounds) {
+                const activeRounds = playoffData.rounds.filter(round => round.series.some(series => series.bottomSeed.wins < series.neededToWin && series.topSeed.wins < series.neededToWin));
+                const activeRoundNumbers = activeRounds.map(round => round.roundNumber);
+                currentRound = Math.min(...activeRoundNumbers);
+            }
+            const playoffSeries = this.computePlayoffDetails(playoffData).filter(s => s.round >= currentRound);
 
             this.sendSocketNotification('PLAYOFFS', playoffSeries);
         }
@@ -553,5 +541,5 @@ module.exports = NodeHelper.create({
         if (hasLiveGames || gameAboutToStart) {
             return this.updateSchedule();
         }
-    }
+    },
 });
