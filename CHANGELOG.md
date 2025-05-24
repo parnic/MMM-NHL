@@ -8,6 +8,8 @@
 
 ### Changed
 
+- Show the intermission clock along with "1st/2nd/3rd Intermission" during intermissions.
+
 ### Removed
 
 ## [2.5.3]
