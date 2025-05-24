@@ -1,0 +1,11 @@
+script:pre-request {
+  const today = new Date();
+  const formatted = new Intl.DateTimeFormat('fr-ca', { timeZone: 'America/Toronto' }).format(today);
+  bru.setVar("date", formatted);
+  
+  const year = today.getFullYear();
+  const lastYear = year - 1;
+  const season = `${lastYear}${year}`
+  bru.setVar("season", season);
+  
+}
