@@ -191,7 +191,7 @@ module.exports = NodeHelper.create({
             return;
         }
 
-        return score?.clock?.inIntermission ? '00:00' : score?.clock?.timeRemaining;
+        return score?.clock?.timeRemaining;
     },
 
     /**
@@ -217,6 +217,7 @@ module.exports = NodeHelper.create({
 
         for (const game of schedule) {
             game.timeRemaining = this.getRemainingGameTime(game, games);
+            game.inIntermission = games.filter(g => g.id === game.id)[0]?.clock?.inIntermission;
         }
 
         return schedule;
@@ -420,6 +421,7 @@ module.exports = NodeHelper.create({
                 period: game.periodDescriptor.number > 3 ? `${game.periodDescriptor.number}` : this.getNumberWithOrdinal(game.periodDescriptor.number),
                 periodType: game.periodDescriptor.periodType,
                 timeRemaining: game.timeRemaining,
+                inIntermission: game.inIntermission,
             },
         };
     },
