@@ -5,6 +5,7 @@
   "1st": "1. Drittel",
   "2nd": "2. Drittel",
   "3rd": "3. Drittel",
+  "INTERMISSION": "{INT_NUM} Intermission",
   "OVER_TIME": "{OT_NUM}Verlängerung",
   "SHOOTOUT": "Elfmeterschießen",
   "FINAL": "Beendet",

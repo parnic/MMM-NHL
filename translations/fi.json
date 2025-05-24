@@ -5,6 +5,7 @@
   "1st": "1. Erä",
   "2nd": "2. Erä",
   "3rd": "3. Erä",
+  "INTERMISSION": "{INT_NUM} Intermission",
   "OVER_TIME": "{OT_NUM}JA",
   "SHOOTOUT": "VL",
   "FINAL": "Päättynyt",
