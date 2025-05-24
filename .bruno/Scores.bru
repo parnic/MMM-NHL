@@ -1,0 +1,15 @@
+meta {
+  name: Scores
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://api-web.nhle.com/v1/score/:date
+  body: none
+  auth: inherit
+}
+
+params:path {
+  date: {{date}}
+}

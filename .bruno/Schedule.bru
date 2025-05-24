@@ -1,0 +1,15 @@
+meta {
+  name: Schedule
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://api-web.nhle.com/v1/schedule/:date
+  body: none
+  auth: inherit
+}
+
+params:path {
+  date: {{date}}
+}

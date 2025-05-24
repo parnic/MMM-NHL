@@ -1,0 +1,15 @@
+meta {
+  name: Playoffs
+  type: http
+  seq: 4
+}
+
+get {
+  url: https://api-web.nhle.com/v1/playoff-series/carousel/:season
+  body: none
+  auth: inherit
+}
+
+params:path {
+  season: {{season}}
+}
