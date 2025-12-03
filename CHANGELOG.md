@@ -1,14 +1,10 @@
 # MMM-NHL Changelog
 
-## [Unreleased]
-
-### Fixed
-
-### Added
+## [2.5.4]
 
 ### Changed
 
-### Removed
+- Update dev dependencies for vulnerabilities.
 
 ## [2.5.3]
 
